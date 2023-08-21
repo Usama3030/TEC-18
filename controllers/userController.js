@@ -1,31 +1,29 @@
-const UserModel = require("../models/users");
-const mongoose = require('../db/db');
 
-//create api
-exports.createUser = async (req, res) =>{
-  try{
-    const userData = req.body;
-    const newUser = new UserModel(userData);
-    await newUser.save();
-    res.status(201).json({ message: 'User created successfully.', user: newUser });
-  }catch (error) {
-    res.status(500).json({ error: 'An error Occured while creating user.'});
-  }
-};
+const User = require('../models/users');
+const Business = require('../models/business');
 
-//Get APi
+exports.registerUser = async (req, res) => {
+  try {
+    const { name, email, password, businessName, roles } = req.body;
 
-exports.getUserById = async (req, res) =>{
-  try{
-    const userId = req.params.userId;
-    const user = await UserModel.findById(userId);
-
-    if(!user){
-      return res.status(404).json({error: 'User not found.'});
+    const business = await Business.findOne({ name: businessName });
+    if (!business) {
+      return res.status(406).json({ error: 'Business not found' });
     }
 
-    res.json(user);
-  }catch (error) {
-    res.status(500).json({error: 'An error occured while fetching User.'});
+    const newUser = new User({
+      name,
+      email,
+      password,
+      businesses: [{
+        business: business._id,
+        roles,
+      }],
+    });
+
+    const savedUser = await newUser.save();
+    res.status(201).json(savedUser);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
