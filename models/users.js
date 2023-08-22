@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     },
     roles: [{ type: String, required: true }],
   }],
+  isVerified: { type: Boolean, default: false },
 });
 
 userSchema.pre('save', async function(next) {
@@ -30,5 +31,7 @@ userSchema.pre('save', async function(next) {
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
+
+
 
 
