@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -18,6 +20,6 @@ app.use('/api2', businessRoutes);
 app.use('/api3', buildingRoutes);
 app.use('/api4', checklistTypesRoutes)
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${port}`);
 });

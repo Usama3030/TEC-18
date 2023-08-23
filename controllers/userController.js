@@ -1,19 +1,22 @@
-
+require('dotenv').config(); 
 const User = require('../models/users');
 const Business = require('../models/business');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken'); // Import jwt library
+const jwt = require('jsonwebtoken'); 
 const nodemailer = require("nodemailer");
-const crypto = require('crypto'); // Import crypto library
+const crypto = require('crypto'); 
 
 // Generate a random secret key for JWT signing
 const tokenSecretKey = crypto.randomBytes(64).toString('hex');
-console.log('Generated Secret Key:', tokenSecretKey);
+
+
+const mailgunApiKey = process.env.MAILGUN_API_KEY;
+const mailgunDomain = process.env.MAILGUN_DOMAIN;
 
 const mailgun = require('mailgun-js')({
-  apiKey: '67014088d315cf79e7be791d6630113a-f0e50a42-c8d897b6',
-  domain: 'sandbox3de5fce710b94d3d9615b047bb4bc6fc.mailgun.org',
+  apiKey: mailgunApiKey,
+  domain: mailgunDomain,
 });
 
 // ...
