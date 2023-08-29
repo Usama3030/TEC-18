@@ -9,11 +9,16 @@ const businessRoutes = require('./routes/businessRoutes');
 const buildingRoutes = require('./routes/buildingRoutes');
 const checklistTypesRoutes = require('./routes/checklistRoutes');
 const mongoose = require("./db/db");
+const cors = require("cors");
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
 
 app.use(express.json());
+
+
 
 app.use('/api', userRoutes);
 app.use('/api2', businessRoutes);
@@ -23,3 +28,5 @@ app.use('/api4', checklistTypesRoutes)
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+

@@ -4,6 +4,7 @@ const checklistController = require('../controllers/checklistController');
 
 router.post('/check', checklistController.createChecklistTypes);
 router.get('/check/:checklistTypeId', checklistController.getChecklistTypesById);
+router.get('/checkall', checklistController.getAllChecklistTypes);
 
 
 

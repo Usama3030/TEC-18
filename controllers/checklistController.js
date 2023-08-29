@@ -33,3 +33,16 @@ exports.getChecklistTypesById = async (req, res) =>{
         res.status(500).json({error: 'An error occured while fetching Checklist Types. '});
      }
 };
+
+exports.getAllChecklistTypes = async (req, res) => {
+    try {
+        const checklistTypes = await ChecklistTypesModel.find();
+        res.json(checklistTypes);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+

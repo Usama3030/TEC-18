@@ -82,6 +82,9 @@ const sendVerifyEmail = async (name, email, user_id) => {
   }
 };
 
+
+/*
+
 exports.registerUser = async (req, res) => {
   try {
     const { name, email, password, businessName, roles } = req.body;
@@ -110,6 +113,50 @@ exports.registerUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+
+*/
+
+
+
+
+
+
+
+
+exports.registerUser = async (req, res) => {
+  try {
+    const { name, email, password, business, roles } = req.body;
+
+    const businessObj = await Business.findOne({ name: business });
+    if (!businessObj) {
+      return res.status(406).json({ error: 'Business not found' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      businesses: [
+        {
+          business: businessObj._id,
+          roles,
+        },
+      ],
+    });
+
+    const savedUser = await newUser.save();
+
+    sendVerifyEmail(savedUser.name, savedUser.email, savedUser._id);
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 
 exports.loginUser = async (req, res) => {
   try {
@@ -140,3 +187,7 @@ exports.loginUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+
+
+
